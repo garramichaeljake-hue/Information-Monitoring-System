@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MNHS Admin Dashboard</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap');
+*{box-sizing:border-box}
+body{margin:0;background:#f5f1e8;color:#111;font-family:Nunito,sans-serif}
+header{background:#111;color:white;padding:20px;text-align:center;border-bottom:8px solid #d71920}
+.brand{display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap}
+.brand img{width:75px;height:75px;object-fit:contain;background:white;border:3px solid #d71920;border-radius:50%;padding:4px}
+h1,h2{font-family:Bangers,cursive;letter-spacing:1px}
+h1{font-size:clamp(27px,6vw,45px);margin:5px}
+nav{background:#d71920;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;padding:12px}
+nav a{color:white;text-decoration:none;border:2px solid white;padding:9px 13px;font-weight:900}
+nav a:hover{background:#111}
+main{max-width:900px;margin:auto;padding:20px}
+.card{background:white;border:3px solid #111;box-shadow:6px 6px 0 #d71920;padding:22px;margin-bottom:22px}
+.card h2{font-size:32px}
+input,textarea,select{display:block;width:100%;padding:12px;margin:10px 0;border:3px solid #111;font:inherit}
+textarea{min-height:130px}
+button{background:#d71920;color:white;padding:12px 18px;border:3px solid #111;font-weight:900;font:inherit;cursor:pointer;margin:5px}
+.post{border:2px solid #111;padding:15px;margin:15px 0}
+.post img{width:100%;max-height:250px;object-fit:contain}
+#message{color:#d71920;font-weight:900}
+footer{background:#111;color:white;text-align:center;padding:20px;border-top:7px solid #d71920}
+</style>
+</head>
+<body>
+<header><div class="brand">
+<img src="deped-logo.png" alt="DepEd Logo">
+<div><h1>MNHS ADMIN DASHBOARD</h1><p>INFORMATION MANAGEMENT</p></div>
+</div></header>
+<nav>
+<a href="index.html">HOME</a><a href="announcements.html">ANNOUNCEMENTS</a><a href="events.html">EVENTS</a><a href="schedules.html">SCHEDULES</a><a href="about.html">ABOUT</a>
+</nav>
+<main>
+<section class="card" id="loginBox">
+<h2>ADMIN LOGIN</h2>
+<p>Only approved administrators can access this dashboard.</p>
+<form id="loginForm">
+<input id="email" type="email" placeholder="Admin email" required>
+<input id="password" type="password" placeholder="Password" required>
+<button type="submit">LOG IN</button>
+</form>
+<p id="message"></p>
+</section>
+
+<section class="card" id="dashboard" hidden>
+<h2>ADD SCHOOL INFORMATION</h2>
+<form id="postForm">
+<label>Choose category</label>
+<select id="page">
+<option value="announcements">Announcements</option>
+<option value="events">Events</option>
+<option value="schedules">Schedules</option>
+</select>
+<label>Title</label>
+<input id="title" required placeholder="Enter title">
+<label>Information</label>
+<textarea id="content" required placeholder="Write information here"></textarea>
+<label>Upload photo (optional)</label>
+<input id="photo" type="file" accept="image/*">
+<label>Upload file (optional)</label>
+<input id="attachment" type="file">
+<button id="publish" type="submit">PUBLISH</button>
+</form>
+<button id="logout">LOG OUT</button>
+</section>
+
+<section class="card" id="manageBox" hidden>
+<h2>MANAGE PUBLISHED INFORMATION</h2>
+<div id="managePosts"></div>
+</section>
+</main>
+<footer>© 2026 Minuyan National High School</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const $=id=>document.getElementById(id);
+const safe=s=>String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+async function checkAdmin(){
+ const {data:{user}}=await db.auth.getUser();
+ if(!user){showLogin();return false;}
+ const {data,error}=await db.from("profiles").select("role").eq("id",user.id).maybeSingle();
+ if(error||!data||data.role!=="admin"){
+  await db.auth.signOut();showLogin();
+  $("message").textContent="This account is not an approved administrator.";
+  return false;
+ }
+ $("loginBox").hidden=true;
+ $("dashboard").hidden=false;
+ $("manageBox").hidden=false;
+ await loadPosts();
+ return true;
+}
+function showLogin(){
+ $("loginBox").hidden=false;
+ $("dashboard").hidden=true;
+ $("manageBox").hidden=true;
+}
+$("loginForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ $("message").textContent="Signing in...";
+ const {error}=await db.auth.signInWithPassword({email:$("email").value,password:$("password").value});
+ if(error){$("message").textContent="Login failed. Check your details.";return;}
+ await checkAdmin();
+});
+async function upload(file){
+ if(!file)return null;
+ const name=Date.now()+"-"+file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+ const {error}=await db.storage.from("school-files").upload(name,file);
+ if(error)throw error;
+ return db.storage.from("school-files").getPublicUrl(name).data.publicUrl;
+}
+$("postForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ if(!(await checkAdmin()))return;
+ $("publish").disabled=true;
+ try{
+  const image=await upload($("photo").files[0]);
+  const file=await upload($("attachment").files[0]);
+  const {error}=await db.from("site_posts").insert({
+   page:$("page").value,
+   title:$("title").value.trim(),
+   content:$("content").value.trim(),
+   image_url:image,
+   file_url:file
+  });
+  if(error)throw error;
+  $("postForm").reset();
+  await loadPosts();
+  alert("Information published!");
+ }catch(err){
+  alert("Unable to publish. Check your connection and permissions.");
+  console.error(err);
+ }finally{$("publish").disabled=false;}
+});
+async function loadPosts(){
+ const {data,error}=await db.from("site_posts").select("*").order("created_at",{ascending:false});
+ if(error){$("managePosts").textContent="Could not load posts.";return;}
+ $("managePosts").innerHTML=(data||[]).map(p=>`
+ <article class="post">
+ <b>${safe(p.title)}</b> — ${safe(p.page)}
+ <p>${safe(p.content)}</p>
+ ${p.image_url?`<img src="${safe(p.image_url)}" alt="Post image">`:""}
+ <p><button onclick="editPost('${p.id}')">EDIT TEXT</button>
+ <button onclick="deletePost('${p.id}')">DELETE</button></p>
+ </article>`).join("")||"No posts yet.";
+}
+async function editPost(id){
+ if(!(await checkAdmin()))return;
+ const {data:p,error}=await db.from("site_posts").select("*").eq("id",id).single();
+ if(error||!p){alert("Post not found.");return;}
+ const title=prompt("Edit title:",p.title);
+ if(title===null)return;
+ const content=prompt("Edit information:",p.content);
+ if(content===null)return;
+ const {error:updateError}=await db.from("site_posts").update({
+  title:title.trim(),content:content.trim(),updated_at:new Date().toISOString()
+ }).eq("id",id);
+ if(updateError){alert("Unable to edit post.");return;}
+ await loadPosts();
+}
+async function deletePost(id){
+ if(!(await checkAdmin()))return;
+ if(!confirm("Delete this post?"))return;
+ const {error}=await db.from("site_posts").delete().eq("id",id);
+ if(error){alert("Unable to delete post.");return;}
+ await loadPosts();
+}
+$("logout").addEventListener("click",async()=>{
+ await db.auth.signOut();
+ showLogin();
+});
+checkAdmin();
+</script>
+</body>
+</html>

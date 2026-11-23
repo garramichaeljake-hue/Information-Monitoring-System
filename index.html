@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MNHS Information Monitoring System</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap');
+*{box-sizing:border-box}
+body{margin:0;background:#f5f1e8;color:#111;font-family:Nunito,sans-serif}
+header{background:#111;color:white;padding:20px;text-align:center;border-bottom:8px solid #d71920}
+.brand{display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap}
+.brand img{width:75px;height:75px;object-fit:contain;background:white;border:3px solid #d71920;border-radius:50%;padding:4px}
+h1,h2{font-family:Bangers,cursive;letter-spacing:1px}
+h1{font-size:clamp(27px,6vw,45px);margin:5px}
+nav{background:#d71920;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;padding:12px}
+nav a{color:white;text-decoration:none;border:2px solid white;padding:9px 13px;font-weight:900}
+nav a:hover{background:#111}
+main{max-width:1000px;margin:auto;padding:20px}
+.hero,.card{background:white;border:3px solid #111;box-shadow:6px 6px 0 #d71920;padding:22px;margin-bottom:22px}
+.hero{text-align:center;padding:35px 20px}
+.hero h2{font-size:clamp(35px,7vw,55px);margin:5px}
+.card h2{font-size:30px}
+.button{display:inline-block;background:#d71920;color:white;border:2px solid #111;padding:10px 15px;text-decoration:none;font-weight:900;margin:5px}
+input{width:100%;padding:13px;border:3px solid #111;font:inherit}
+.search-result{display:block;padding:10px;color:#111;border-bottom:2px dashed #d71920}
+footer{background:#111;color:white;text-align:center;padding:20px;border-top:7px solid #d71920}
+</style>
+</head>
+<body>
+<header>
+<div class="brand">
+<img src="deped-logo.png" alt="DepEd Logo">
+<div>
+<h1>MINUYAN NATIONAL HIGH SCHOOL</h1>
+<p>WEB-BASED SCHOOL INFORMATION MONITORING SYSTEM</p>
+</div>
+</div>
+</header>
+<nav>
+<a href="index.html">HOME</a>
+<a href="announcements.html">ANNOUNCEMENTS</a>
+<a href="events.html">EVENTS</a>
+<a href="schedules.html">SCHEDULES</a>
+<a href="about.html">ABOUT</a>
+<a href="admin.html">ADMIN</a>
+</nav>
+<main>
+<section class="hero">
+<h2>WELCOME TO MNHS!</h2>
+<p>Your online source for school announcements, events, schedules, and important information.</p>
+<a class="button" href="announcements.html">VIEW ANNOUNCEMENTS</a>
+<a class="button" href="events.html">VIEW EVENTS</a>
+</section>
+
+<section class="card">
+<h2>SEARCH SCHOOL INFORMATION</h2>
+<p>Search for information available on this website.</p>
+<input id="search" type="search" placeholder="Search announcements, events, schedules...">
+<div id="results"></div>
+</section>
+
+<section class="card">
+<h2>ABOUT THE SYSTEM</h2>
+<p>The Web-Based School Information Monitoring System is designed to provide students and other members of the school community with an organized and convenient way to access school information.</p>
+<p>Through this website, visitors can view announcements, school events, schedules, and other important updates.</p>
+</section>
+
+<section class="card">
+<h2>BENEFITS OF THE WEBSITE</h2>
+<ul>
+<li>Easier access to school information.</li>
+<li>Organized announcements and updates.</li>
+<li>Convenient viewing of school events and schedules.</li>
+<li>Search feature for finding information.</li>
+<li>Administrators can publish updates through the admin page.</li>
+</ul>
+</section>
+
+<section class="card">
+<h2>EXPLORE THE WEBSITE</h2>
+<a class="button" href="announcements.html">ANNOUNCEMENTS</a>
+<a class="button" href="events.html">EVENTS</a>
+<a class="button" href="schedules.html">SCHEDULES</a>
+</section>
+</main>
+<footer>© 2026 Minuyan National High School</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const search = document.getElementById("search");
+const results = document.getElementById("results");
+
+search.addEventListener("input",async()=>{
+ const q=search.value.trim().toLowerCase();
+ if(!q){results.innerHTML="";return;}
+ const {data,error}=await db.from("site_posts").select("*");
+ if(error){results.textContent="Search unavailable.";return;}
+ const pages=[
+  ["Home","index.html"],["Announcements","announcements.html"],
+  ["Events","events.html"],["Schedules","schedules.html"],["About","about.html"]
+ ];
+ let matches=pages.filter(p=>p[0].toLowerCase().includes(q));
+ let html=matches.map(p=>`<a class="search-result" href="${p[1]}">Open ${p[0]}</a>`).join("");
+ (data||[]).filter(p=>(p.title+" "+p.content).toLowerCase().includes(q))
+ .forEach(p=>html+=`<a class="search-result" href="${p.page}.html">${escapeText(p.title)} — ${p.page}</a>`);
+ results.innerHTML=html||"No matching information found.";
+});
+function escapeText(s){
+ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+}
+</script>
+</body>
+</html>

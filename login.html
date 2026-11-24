@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #0d1117;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 380px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      padding: 35px 28px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 35px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #8b949e;
+      margin-bottom: 28px;
+      font-size: 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 18px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      color: white;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #238636;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      background: #238636;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2ea043;
+    }
+
+    #message {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .footer {
+      text-align: center;
+      color: #8b949e;
+      font-size: 12px;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-box">
+    <div class="logo">🔐</div>
+
+    <h2>Welcome Back</h2>
+    <p class="subtitle">Login to your account</p>
+
+    <form id="loginForm">
+      <label for="username">Username</label>
+      <input type="text" id="username"
+        placeholder="Enter your username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password"
+        placeholder="Enter your password" required>
+
+      <button type="submit">Log In</button>
+    </form>
+
+    <p id="message"></p>
+
+    <div class="footer">
+      Website Login Portal
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("loginForm")
+      .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        const username =
+          document.getElementById("username").value;
+
+        const password =
+          document.getElementById("password").value;
+
+        document.getElementById("message").textContent =
+          "Login page is ready. Connect an authentication service to sign in.";
+
+      });
+  </script>
+
+</body>
+</html>

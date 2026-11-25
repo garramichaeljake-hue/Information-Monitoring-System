@@ -48,6 +48,63 @@ margin:15px 0;
 font-weight:700;
 }
 
+/* FUN RUN STATION GALLERY */
+.station-gallery{
+margin-top:25px;
+padding-top:20px;
+border-top:3px dashed #d71920;
+}
+
+.station-gallery h2{
+text-align:center;
+font-size:32px;
+margin-bottom:20px;
+}
+
+.station-container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:18px;
+}
+
+.station-card{
+background:#f5f1e8;
+border:3px solid #111;
+box-shadow:4px 4px 0 #d71920;
+overflow:hidden;
+text-align:center;
+border-radius:8px;
+}
+
+.station-card img{
+width:100%;
+height:auto;
+max-height:none;
+display:block;
+object-fit:contain;
+border:none;
+}
+
+.station-card h3{
+font-family:Bangers,cursive;
+font-size:25px;
+letter-spacing:1px;
+margin:0;
+padding:12px;
+background:#111;
+color:white;
+}
+
+/* Mobile */
+@media(max-width:600px){
+main{padding:12px}
+.heading,.post{padding:16px}
+.heading h2{font-size:34px}
+.post h2{font-size:26px}
+.station-container{grid-template-columns:1fr}
+.station-card{max-width:400px;width:100%;margin:auto}
+}
+
 footer{background:#111;color:white;text-align:center;padding:20px;border-top:7px solid #d71920}
 </style>
 </head>
@@ -110,6 +167,41 @@ ka-eskwela! Let's make this activity full of energy, teamwork, and fun!
 
 <p><b>See you at the starting line! 🏃‍♀️🏃‍♂️</b></p>
 
+<!-- FUN RUN STATIONS 1-5 -->
+<section class="station-gallery">
+
+<h2>🏁 FUN RUN STATIONS</h2>
+
+<div class="station-container">
+
+<div class="station-card">
+<img src="12365.jpg" alt="Fun Run Station 1 poster">
+<h3>STATION 1</h3>
+</div>
+
+<div class="station-card">
+<img src="12366.jpg" alt="Fun Run Station 2 poster">
+<h3>STATION 2</h3>
+</div>
+
+<div class="station-card">
+<img src="12367.jpg" alt="Fun Run Station 3 poster">
+<h3>STATION 3</h3>
+</div>
+
+<div class="station-card">
+<img src="12368.jpg" alt="Fun Run Station 4 poster">
+<h3>STATION 4</h3>
+</div>
+
+<div class="station-card">
+<img src="12369.jpg" alt="Fun Run Station 5 poster">
+<h3>STATION 5</h3>
+</div>
+
+</div>
+</section>
+
 </article>
 
 </main>
@@ -160,4 +252,5 @@ load();
 </script>
 
 </body>
-</html>
+  </html>
+  

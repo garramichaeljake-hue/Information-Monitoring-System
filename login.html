@@ -28,60 +28,46 @@
       width: 100%;
       max-width: 380px;
       background: #161b22;
+      padding: 35px;
+      border-radius: 15px;
       border: 1px solid #30363d;
-      padding: 35px 28px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    .logo {
-      text-align: center;
-      font-size: 35px;
-      margin-bottom: 10px;
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .subtitle {
       text-align: center;
       color: #8b949e;
-      margin-bottom: 28px;
-      font-size: 14px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
+      margin-bottom: 25px;
     }
 
     input {
       width: 100%;
       padding: 13px;
-      margin-bottom: 18px;
-      background: #0d1117;
+      margin-bottom: 15px;
       border: 1px solid #30363d;
       border-radius: 8px;
+      background: #0d1117;
       color: white;
+      font-size: 15px;
       outline: none;
     }
 
     input:focus {
-      border-color: #238636;
+      border-color: #58a6ff;
     }
 
     button {
       width: 100%;
       padding: 13px;
-      border: none;
-      border-radius: 8px;
       background: #238636;
       color: white;
+      border: none;
+      border-radius: 8px;
       font-size: 16px;
-      font-weight: bold;
       cursor: pointer;
     }
 
@@ -96,16 +82,9 @@
 
     #message {
       text-align: center;
-      margin-top: 15px;
+      margin-top: 18px;
       font-size: 14px;
       overflow-wrap: anywhere;
-    }
-
-    .footer {
-      text-align: center;
-      color: #8b949e;
-      font-size: 12px;
-      margin-top: 25px;
     }
   </style>
 </head>
@@ -113,102 +92,95 @@
 <body>
 
   <div class="login-box">
-    <div class="logo">🔐</div>
-
-    <h2>Welcome Back</h2>
+    <h2>Welcome Back!</h2>
     <p class="subtitle">Login to your account</p>
 
     <form id="loginForm">
-      <label for="email">Email</label>
       <input
         type="email"
         id="email"
-        placeholder="Enter your email"
+        placeholder="Email Address"
         autocomplete="email"
         required
       >
 
-      <label for="password">Password</label>
       <input
         type="password"
         id="password"
-        placeholder="Enter your password"
+        placeholder="Password"
         autocomplete="current-password"
         required
       >
 
-      <button type="submit" id="loginButton">
-        Log In
+      <button type="submit" id="loginBtn">
+        Login
       </button>
     </form>
 
-    <p id="message" role="status"></p>
-
-    <div class="footer">
-      Website Login Portal
-    </div>
+    <p id="message"></p>
   </div>
 
-  <script type="module">
-    import { initializeApp } from
-      "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-    import {
-      getAuth,
-      signInWithEmailAndPassword
-    } from
-      "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
-
-    // PALITAN ITO NG CONFIGURATION MULA SA FIREBASE CONSOLE
+  <script>
+    // PALITAN ITO NG FIREBASE CONFIG NINYO
     const firebaseConfig = {
-  apiKey: "AIzaSyA1mrO4T70w89BWK6mQd53GkYVcP1rk9Xk",
-  authDomain: "loginsystem-13883.firebaseapp.com",
-  projectId: "loginsystem-13883",
-  storageBucket: "loginsystem-13883.firebasestorage.app",
-  messagingSenderId: "161320159005",
-  appId: "1:161320159005:web:d2679eeb82a662bf14c3f4"
-};
+      apiKey: "AIzaSyA1mr04T70w89BWK6mQd53GkYVcP1rK9XK",
+      authDomain: "PASTE_YOUR_AUTH_DOMAIN",
+      projectId: "PASTE_YOUR_PROJECT_ID",
+      storageBucket: "PASTE_YOUR_STORAGE_BUCKET",
+      messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID",
+      appId: "PASTE_YOUR_APP_ID"
+    };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    firebase.initializeApp(firebaseConfig);
+
+    const auth = firebase.auth();
 
     const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const loginBtn = document.getElementById("loginBtn");
     const message = document.getElementById("message");
-    const loginButton = document.getElementById("loginButton");
 
     loginForm.addEventListener("submit", async function(event) {
       event.preventDefault();
 
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
 
-      message.textContent = "Logging in...";
-      loginButton.disabled = true;
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Logging in...";
+      message.textContent = "";
+      message.style.color = "#8b949e";
 
       try {
-        const userCredential = await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+        await auth.signInWithEmailAndPassword(email, password);
 
-        message.textContent = "Login successful!";
+        message.style.color = "#3fb950";
+        message.textContent = "Login successful! Welcome!";
 
-        // Palitan kung iba ang pangalan ng dashboard file ninyo
-        window.location.href = "dashboard.html";
+        loginBtn.textContent = "Logged In";
 
       } catch (error) {
+        message.style.color = "#f85149";
+
         if (error.code === "auth/invalid-credential" ||
             error.code === "auth/wrong-password" ||
             error.code === "auth/user-not-found") {
           message.textContent = "Incorrect email or password.";
         } else if (error.code === "auth/invalid-email") {
           message.textContent = "Please enter a valid email.";
+        } else if (error.code === "auth/too-many-requests") {
+          message.textContent = "Too many attempts. Please try again later.";
         } else {
-          message.textContent = "Login failed: " + error.message;
+          message.textContent = error.message;
         }
-      } finally {
-        loginButton.disabled = false;
+
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Login";
       }
     });
   </script>

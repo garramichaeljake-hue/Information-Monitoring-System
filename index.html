@@ -5,111 +5,915 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MNHS Information Monitoring System</title>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap');
+
 *{box-sizing:border-box}
-body{margin:0;background:#f5f1e8;color:#111;font-family:Nunito,sans-serif}
-header{background:#111;color:white;padding:20px;text-align:center;border-bottom:8px solid #d71920}
-.brand{display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap}
-.brand img{width:75px;height:75px;object-fit:contain;background:white;border:3px solid #d71920;border-radius:50%;padding:4px}
-h1,h2{font-family:Bangers,cursive;letter-spacing:1px}
-h1{font-size:clamp(27px,6vw,45px);margin:5px}
-nav{background:#d71920;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;padding:12px}
-nav a{color:white;text-decoration:none;border:2px solid white;padding:9px 13px;font-weight:900}
+
+body{
+ margin:0;
+ background:#f5f1e8;
+ color:#111;
+ font-family:Nunito,sans-serif;
+}
+
+header{
+ background:#111;
+ color:white;
+ padding:20px;
+ text-align:center;
+ border-bottom:8px solid #d71920;
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:15px;
+ flex-wrap:wrap;
+}
+
+.brand img{
+ width:75px;
+ height:75px;
+ object-fit:contain;
+ background:white;
+ border:3px solid #d71920;
+ border-radius:50%;
+ padding:4px;
+}
+
+h1,h2{
+ font-family:Bangers,cursive;
+ letter-spacing:1px;
+}
+
+h1{
+ font-size:clamp(27px,6vw,45px);
+ margin:5px;
+}
+
+nav{
+ background:#d71920;
+ display:flex;
+ justify-content:center;
+ flex-wrap:wrap;
+ gap:8px;
+ padding:12px;
+}
+
+nav a{
+ color:white;
+ text-decoration:none;
+ border:2px solid white;
+ padding:9px 13px;
+ font-weight:900;
+}
+
 nav a:hover{background:#111}
-main{max-width:1000px;margin:auto;padding:20px}
-.hero,.card{background:white;border:3px solid #111;box-shadow:6px 6px 0 #d71920;padding:22px;margin-bottom:22px}
-.hero{text-align:center;padding:35px 20px}
-.hero h2{font-size:clamp(35px,7vw,55px);margin:5px}
+
+main{
+ max-width:1000px;
+ margin:auto;
+ padding:20px;
+}
+
+.hero,.card{
+ background:white;
+ border:3px solid #111;
+ box-shadow:6px 6px 0 #d71920;
+ padding:22px;
+ margin-bottom:22px;
+}
+
+.hero{
+ text-align:center;
+ padding:35px 20px;
+}
+
+.hero h2{
+ font-size:clamp(35px,7vw,55px);
+ margin:5px;
+}
+
 .card h2{font-size:30px}
-.button{display:inline-block;background:#d71920;color:white;border:2px solid #111;padding:10px 15px;text-decoration:none;font-weight:900;margin:5px}
-input{width:100%;padding:13px;border:3px solid #111;font:inherit}
-.search-result{display:block;padding:10px;color:#111;border-bottom:2px dashed #d71920}
-footer{background:#111;color:white;text-align:center;padding:20px;border-top:7px solid #d71920}
+
+.button{
+ display:inline-block;
+ background:#d71920;
+ color:white;
+ border:2px solid #111;
+ padding:10px 15px;
+ text-decoration:none;
+ font-weight:900;
+ margin:5px;
+ cursor:pointer;
+}
+
+input{
+ width:100%;
+ padding:13px;
+ border:3px solid #111;
+ font:inherit;
+}
+
+.search-result{
+ display:block;
+ padding:10px;
+ color:#111;
+ border-bottom:2px dashed #d71920;
+}
+
+footer{
+ background:#111;
+ color:white;
+ text-align:center;
+ padding:20px;
+ border-top:7px solid #d71920;
+}
+
+/* LOGIN SCREEN */
+
+#authScreen{
+ position:fixed;
+ inset:0;
+ z-index:9999;
+ background:#f5f1e8;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:15px;
+ overflow-y:auto;
+}
+
+.auth-box{
+ width:100%;
+ max-width:420px;
+ background:white;
+ border:4px solid #111;
+ box-shadow:9px 9px 0 #d71920;
+ padding:25px;
+ text-align:center;
+}
+
+.auth-logo{
+ width:85px;
+ height:85px;
+ object-fit:contain;
+}
+
+.auth-box h2{
+ font-size:42px;
+ margin:5px;
+}
+
+.auth-subtitle{
+ font-size:13px;
+ font-weight:900;
+ margin-bottom:20px;
+}
+
+.auth-tabs{
+ display:flex;
+ gap:8px;
+ margin-bottom:20px;
+}
+
+.auth-tabs button{
+ flex:1;
+ padding:12px;
+ border:3px solid #111;
+ background:white;
+ font-weight:900;
+ font-family:Nunito,sans-serif;
+ cursor:pointer;
+}
+
+.auth-tabs button.active{
+ background:#d71920;
+ color:white;
+}
+
+.auth-form{text-align:left}
+
+.auth-form label{
+ display:block;
+ font-weight:900;
+ margin:12px 0 6px;
+}
+
+.auth-submit{
+ width:100%;
+ margin:18px 0 8px;
+ padding:14px;
+ background:#d71920;
+ color:white;
+ border:3px solid #111;
+ font-size:17px;
+ font-weight:900;
+ font-family:Nunito,sans-serif;
+ cursor:pointer;
+ box-shadow:4px 4px 0 #111;
+}
+
+.auth-submit:hover{background:#111}
+
+.auth-message{
+ padding:10px;
+ margin-top:12px;
+ font-weight:900;
+ font-size:13px;
+ display:none;
+}
+
+.auth-message.error{
+ display:block;
+ background:#ffe0e0;
+ border:2px solid #d71920;
+ color:#a00000;
+}
+
+.auth-message.success{
+ display:block;
+ background:#e0ffe5;
+ border:2px solid green;
+ color:green;
+}
+
+.auth-note{
+ font-size:12px;
+ color:#555;
+ margin-top:15px;
+}
+
+#siteContent{display:none}
+
+.account-area{
+ background:#111;
+ color:white;
+ text-align:center;
+ padding:10px;
+ border-bottom:4px solid #d71920;
+}
+
+.account-area button{
+ background:#d71920;
+ color:white;
+ border:2px solid white;
+ padding:7px 13px;
+ font-weight:900;
+ cursor:pointer;
+ margin-left:10px;
+}
+
+@media(max-width:480px){
+ .auth-box{padding:18px}
+ .auth-box h2{font-size:35px}
+ nav{gap:5px}
+ nav a{padding:8px;font-size:12px}
+}
 </style>
 </head>
+
 <body>
+
+<!-- SIGN UP AND LOGIN -->
+
+<div id="authScreen">
+
+ <div class="auth-box">
+
+  <img src="deped-logo.png" class="auth-logo" alt="DepEd Logo">
+
+  <h2 id="authTitle">MNHS LOGIN</h2>
+
+  <p class="auth-subtitle">
+   MINUYAN NATIONAL HIGH SCHOOL<br>
+   INFORMATION MONITORING SYSTEM
+  </p>
+
+  <div class="auth-tabs">
+
+   <button id="loginTab" class="active"
+   onclick="showAuthForm('login')">
+   LOGIN
+   </button>
+
+   <button id="signupTab"
+   onclick="showAuthForm('signup')">
+   SIGN UP
+   </button>
+
+  </div>
+
+  <!-- LOGIN -->
+
+  <form id="loginForm" class="auth-form">
+
+   <label>USERNAME</label>
+
+   <input
+   type="text"
+   id="loginUsername"
+   placeholder="Enter your username"
+   required
+   autocomplete="username">
+
+   <label>PASSWORD</label>
+
+   <input
+   type="password"
+   id="loginPassword"
+   placeholder="Enter your password"
+   required
+   autocomplete="current-password">
+
+   <button type="submit" class="auth-submit">
+   LOGIN TO WEBSITE
+   </button>
+
+  </form>
+
+  <!-- SIGN UP -->
+
+  <form id="signupForm" class="auth-form" style="display:none">
+
+   <label>CREATE USERNAME</label>
+
+   <input
+   type="text"
+   id="signupUsername"
+   placeholder="Create your username"
+   minlength="3"
+   maxlength="30"
+   pattern="[A-Za-z0-9_]+"
+   required
+   autocomplete="username">
+
+   <label>CREATE PASSWORD</label>
+
+   <input
+   type="password"
+   id="signupPassword"
+   placeholder="Create your password"
+   minlength="6"
+   required
+   autocomplete="new-password">
+
+   <label>CONFIRM PASSWORD</label>
+
+   <input
+   type="password"
+   id="confirmPassword"
+   placeholder="Confirm your password"
+   required
+   autocomplete="new-password">
+
+   <button type="submit" class="auth-submit">
+   CREATE ACCOUNT
+   </button>
+
+  </form>
+
+  <div id="authMessage" class="auth-message"></div>
+
+  <p class="auth-note">
+   Create your account once. Use your username
+   and password whenever you return.
+  </p>
+
+ </div>
+
+</div>
+
+
+<!-- WEBSITE CONTENT -->
+
+<div id="siteContent">
+
 <header>
-<div class="brand">
-<img src="deped-logo.png" alt="DepEd Logo">
-<div>
-<h1>MINUYAN NATIONAL HIGH SCHOOL</h1>
-<p>WEB-BASED SCHOOL INFORMATION MONITORING SYSTEM</p>
-</div>
-</div>
+
+ <div class="brand">
+
+  <img src="deped-logo.png" alt="DepEd Logo">
+
+  <div>
+   <h1>MINUYAN NATIONAL HIGH SCHOOL</h1>
+   <p>WEB-BASED SCHOOL INFORMATION MONITORING SYSTEM</p>
+  </div>
+
+ </div>
+
 </header>
+
 <nav>
-<a href="index.html">HOME</a>
-<a href="announcements.html">ANNOUNCEMENTS</a>
-<a href="events.html">EVENTS</a>
-<a href="schedules.html">SCHEDULES</a>
-<a href="about.html">ABOUT</a>
+
+ <a href="index.html">HOME</a>
+ <a href="announcements.html">ANNOUNCEMENTS</a>
+ <a href="events.html">EVENTS</a>
+ <a href="schedules.html">SCHEDULES</a>
+ <a href="about.html">ABOUT</a>
+
 </nav>
+
+<div class="account-area">
+
+ <span id="welcomeUser">WELCOME!</span>
+
+ <button onclick="logoutUser()">LOG OUT</button>
+
+</div>
+
 <main>
-<section class="hero">
-<h2>WELCOME TO MNHS!</h2>
-<p>Your online source for school announcements, events, schedules, and important information.</p>
-<a class="button" href="announcements.html">VIEW ANNOUNCEMENTS</a>
-<a class="button" href="events.html">VIEW EVENTS</a>
-</section>
 
-<section class="card">
-<h2>SEARCH SCHOOL INFORMATION</h2>
-<p>Search for information available on this website.</p>
-<input id="search" type="search" placeholder="Search announcements, events, schedules...">
-<div id="results"></div>
-</section>
+ <section class="hero">
 
-<section class="card">
-<h2>ABOUT THE SYSTEM</h2>
-<p>The Web-Based School Information Monitoring System is designed to provide students and other members of the school community with an organized and convenient way to access school information.</p>
-<p>Through this website, visitors can view announcements, school events, schedules, and other important updates.</p>
-</section>
+  <h2>WELCOME TO MNHS!</h2>
 
-<section class="card">
-<h2>BENEFITS OF THE WEBSITE</h2>
-<ul>
-<li>Easier access to school information.</li>
-<li>Organized announcements and updates.</li>
-<li>Convenient viewing of school events and schedules.</li>
-<li>Search feature for finding information.</li>
-<li>Administrators can publish updates through the admin page.</li>
-</ul>
-</section>
+  <p>
+   Your online source for school announcements,
+   events, schedules, and important information.
+  </p>
 
-<section class="card">
-<h2>EXPLORE THE WEBSITE</h2>
-<a class="button" href="announcements.html">ANNOUNCEMENTS</a>
-<a class="button" href="events.html">EVENTS</a>
-<a class="button" href="schedules.html">SCHEDULES</a>
-</section>
+  <a class="button" href="announcements.html">
+   VIEW ANNOUNCEMENTS
+  </a>
+
+  <a class="button" href="events.html">
+   VIEW EVENTS
+  </a>
+
+ </section>
+
+
+ <section class="card">
+
+  <h2>SEARCH SCHOOL INFORMATION</h2>
+
+  <p>Search for information available on this website.</p>
+
+  <input
+   id="search"
+   type="search"
+   placeholder="Search announcements, events, schedules...">
+
+  <div id="results"></div>
+
+ </section>
+
+
+ <section class="card">
+
+  <h2>ABOUT THE SYSTEM</h2>
+
+  <p>
+   The Web-Based School Information Monitoring System
+   is designed to provide students and other members
+   of the school community with an organized and
+   convenient way to access school information.
+  </p>
+
+  <p>
+   Through this website, visitors can view announcements,
+   school events, schedules, and other important updates.
+  </p>
+
+ </section>
+
+
+ <section class="card">
+
+  <h2>BENEFITS OF THE WEBSITE</h2>
+
+  <ul>
+   <li>Easier access to school information.</li>
+   <li>Organized announcements and updates.</li>
+   <li>Convenient viewing of school events and schedules.</li>
+   <li>Search feature for finding information.</li>
+   <li>Administrators can publish updates through the admin page.</li>
+  </ul>
+
+ </section>
+
+
+ <section class="card">
+
+  <h2>EXPLORE THE WEBSITE</h2>
+
+  <a class="button" href="announcements.html">ANNOUNCEMENTS</a>
+
+  <a class="button" href="events.html">EVENTS</a>
+
+  <a class="button" href="schedules.html">SCHEDULES</a>
+
+ </section>
+
 </main>
-<footer>© 2026 Minuyan National High School</footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
+
+<footer>
+ © 2026 Minuyan National High School
+</footer>
+
+</div>
+
+
 <script>
-const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+// =====================================
+// LOCAL ACCOUNT SYSTEM
+// NO FIREBASE OR SUPABASE
+// =====================================
+
+const authScreen = document.getElementById("authScreen");
+const siteContent = document.getElementById("siteContent");
+const authMessage = document.getElementById("authMessage");
+
+
+// =====================================
+// PASSWORD HASHING
+// =====================================
+
+async function hashPassword(password){
+
+ const encoder = new TextEncoder();
+
+ const data = encoder.encode(password);
+
+ const hash = await crypto.subtle.digest("SHA-256",data);
+
+ return Array.from(new Uint8Array(hash))
+  .map(b=>b.toString(16).padStart(2,"0"))
+  .join("");
+
+}
+
+
+// =====================================
+// GET SAVED ACCOUNTS
+// =====================================
+
+function getAccounts(){
+
+ try{
+  return JSON.parse(localStorage.getItem("mnhsAccounts")) || [];
+ }catch{
+  return [];
+ }
+
+}
+
+
+// =====================================
+// SHOW LOGIN OR SIGN UP
+// =====================================
+
+function showAuthForm(type){
+
+ authMessage.className = "auth-message";
+ authMessage.textContent = "";
+
+ const loginForm = document.getElementById("loginForm");
+ const signupForm = document.getElementById("signupForm");
+
+ const loginTab = document.getElementById("loginTab");
+ const signupTab = document.getElementById("signupTab");
+
+ if(type === "login"){
+
+  loginForm.style.display = "block";
+  signupForm.style.display = "none";
+
+  loginTab.classList.add("active");
+  signupTab.classList.remove("active");
+
+  document.getElementById("authTitle").textContent = "MNHS LOGIN";
+
+ }else{
+
+  loginForm.style.display = "none";
+  signupForm.style.display = "block";
+
+  signupTab.classList.add("active");
+  loginTab.classList.remove("active");
+
+  document.getElementById("authTitle").textContent = "MNHS SIGN UP";
+
+ }
+
+}
+
+
+// =====================================
+// DISPLAY MESSAGE
+// =====================================
+
+function displayMessage(message,type){
+
+ authMessage.textContent = message;
+ authMessage.className = "auth-message " + type;
+
+}
+
+
+// =====================================
+// SIGN UP
+// =====================================
+
+document.getElementById("signupForm")
+.addEventListener("submit",async function(e){
+
+ e.preventDefault();
+
+ const username = document
+  .getElementById("signupUsername")
+  .value.trim();
+
+ const password = document
+  .getElementById("signupPassword")
+  .value;
+
+ const confirmPassword = document
+  .getElementById("confirmPassword")
+  .value;
+
+ if(!/^[a-zA-Z0-9_]{3,30}$/.test(username)){
+
+  displayMessage(
+   "Username must contain 3-30 letters, numbers, or underscores.",
+   "error"
+  );
+
+  return;
+ }
+
+ if(password.length < 6){
+
+  displayMessage(
+   "Password must have at least 6 characters.",
+   "error"
+  );
+
+  return;
+ }
+
+ if(password !== confirmPassword){
+
+  displayMessage(
+   "Passwords do not match!",
+   "error"
+  );
+
+  return;
+ }
+
+ const accounts = getAccounts();
+
+ const exists = accounts.some(account=>
+  account.username.toLowerCase() === username.toLowerCase()
+ );
+
+ if(exists){
+
+  displayMessage(
+   "This username is already registered. Please log in.",
+   "error"
+  );
+
+  return;
+ }
+
+ try{
+
+  const hashedPassword = await hashPassword(password);
+
+  accounts.push({
+
+   username:username,
+
+   password:hashedPassword
+
+  });
+
+  localStorage.setItem(
+   "mnhsAccounts",
+   JSON.stringify(accounts)
+  );
+
+  document.getElementById("signupForm").reset();
+
+  displayMessage(
+   "Account created successfully! You can now log in.",
+   "success"
+  );
+
+  setTimeout(()=>{
+   showAuthForm("login");
+   document.getElementById("loginUsername").value = username;
+  },1200);
+
+ }catch(error){
+
+  displayMessage(
+   "Unable to create account in this browser.",
+   "error"
+  );
+
+ }
+
+});
+
+
+// =====================================
+// LOGIN
+// =====================================
+
+document.getElementById("loginForm")
+.addEventListener("submit",async function(e){
+
+ e.preventDefault();
+
+ const username = document
+  .getElementById("loginUsername")
+  .value.trim();
+
+ const password = document
+  .getElementById("loginPassword")
+  .value;
+
+ const accounts = getAccounts();
+
+ const account = accounts.find(a=>
+  a.username.toLowerCase() === username.toLowerCase()
+ );
+
+ if(!account){
+
+  displayMessage(
+   "Username not found. Please sign up first.",
+   "error"
+  );
+
+  return;
+ }
+
+ try{
+
+  const hashedPassword = await hashPassword(password);
+
+  if(hashedPassword !== account.password){
+
+   displayMessage(
+    "Incorrect password. Please try again.",
+    "error"
+   );
+
+   return;
+  }
+
+  sessionStorage.setItem("mnhsLoggedIn",username);
+
+  document.getElementById("loginForm").reset();
+
+  openWebsite(username);
+
+ }catch(error){
+
+  displayMessage(
+   "Login is unavailable in this browser.",
+   "error"
+  );
+
+ }
+
+});
+
+
+// =====================================
+// OPEN WEBSITE
+// =====================================
+
+function openWebsite(username){
+
+ authScreen.style.display = "none";
+
+ siteContent.style.display = "block";
+
+ document.getElementById("welcomeUser").textContent =
+  "WELCOME, " + username.toUpperCase() + "!";
+
+}
+
+
+// =====================================
+// CHECK LOGIN SESSION
+// =====================================
+
+function checkLogin(){
+
+ const username = sessionStorage.getItem("mnhsLoggedIn");
+
+ if(username){
+
+  const account = getAccounts().find(a=>
+   a.username.toLowerCase() === username.toLowerCase()
+  );
+
+  if(account){
+
+   openWebsite(account.username);
+
+   return;
+
+  }
+
+  sessionStorage.removeItem("mnhsLoggedIn");
+
+ }
+
+ authScreen.style.display = "flex";
+
+ siteContent.style.display = "none";
+
+}
+
+
+// =====================================
+// LOG OUT
+// =====================================
+
+function logoutUser(){
+
+ if(confirm("Are you sure you want to log out?")){
+
+  sessionStorage.removeItem("mnhsLoggedIn");
+
+  siteContent.style.display = "none";
+
+  authScreen.style.display = "flex";
+
+  showAuthForm("login");
+
+ }
+
+}
+
+
+// =====================================
+// ORIGINAL WEBSITE SEARCH
+// =====================================
+
 const search = document.getElementById("search");
+
 const results = document.getElementById("results");
 
-search.addEventListener("input",async()=>{
- const q=search.value.trim().toLowerCase();
- if(!q){results.innerHTML="";return;}
- const {data,error}=await db.from("site_posts").select("*");
- if(error){results.textContent="Search unavailable.";return;}
- const pages=[
-  ["Home","index.html"],["Announcements","announcements.html"],
-  ["Events","events.html"],["Schedules","schedules.html"],["About","about.html"]
+search.addEventListener("input",()=>{
+
+ const q = search.value.trim().toLowerCase();
+
+ if(!q){
+
+  results.innerHTML = "";
+
+  return;
+
+ }
+
+ const pages = [
+
+  ["Home","index.html"],
+
+  ["Announcements","announcements.html"],
+
+  ["Events","events.html"],
+
+  ["Schedules","schedules.html"],
+
+  ["About","about.html"]
+
  ];
- let matches=pages.filter(p=>p[0].toLowerCase().includes(q));
- let html=matches.map(p=>`<a class="search-result" href="${p[1]}">Open ${p[0]}</a>`).join("");
- (data||[]).filter(p=>(p.title+" "+p.content).toLowerCase().includes(q))
- .forEach(p=>html+=`<a class="search-result" href="${p.page}.html">${escapeText(p.title)} — ${p.page}</a>`);
- results.innerHTML=html||"No matching information found.";
+
+ let matches = pages.filter(p=>
+  p[0].toLowerCase().includes(q)
+ );
+
+ let html = matches.map(p=>
+  `<a class="search-result" href="${p[1]}">Open ${p[0]}</a>`
+ ).join("");
+
+ results.innerHTML =
+  html || "No matching information found.";
+
 });
-function escapeText(s){
- return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-}
+
+
+// =====================================
+// START
+// =====================================
+
+checkLogin();
+
 </script>
+
 </body>
 </html>

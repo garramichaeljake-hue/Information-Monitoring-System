@@ -2,63 +2,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MNHS Announcements</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap');
-*{box-sizing:border-box}
-body{margin:0;background:#f5f1e8;color:#111;font-family:Nunito,sans-serif}
-header{background:#111;color:white;padding:20px;text-align:center;border-bottom:8px solid #d71920}
-.brand{display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap}
-.brand img{width:75px;height:75px;object-fit:contain;background:white;border:3px solid #d71920;border-radius:50%;padding:4px}
-h1,h2{font-family:Bangers,cursive;letter-spacing:1px}
-h1{font-size:clamp(27px,6vw,45px);margin:5px}
-nav{background:#d71920;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;padding:12px}
-nav a{color:white;text-decoration:none;border:2px solid white;padding:9px 13px;font-weight:900}
-nav a:hover{background:#111}
-main{max-width:1000px;margin:auto;padding:20px}
-.heading,.post{background:white;border:3px solid #111;box-shadow:6px 6px 0 #d71920;padding:22px;margin-bottom:22px}
-.heading{text-align:center}
-.heading h2{font-size:42px;margin:5px}
-.post h2{font-size:30px}
-.post img{width:100%;max-height:350px;object-fit:contain;border:2px solid #111}
-.post a{color:#d71920;font-weight:900}
-footer{background:#111;color:white;text-align:center;padding:20px;border-top:7px solid #d71920}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previous Announcement</title>
 </head>
 <body>
-<header><div class="brand">
-<img src="deped-logo.png" alt="DepEd Logo">
-<div><h1>MINUYAN NATIONAL HIGH SCHOOL</h1><p>WEB-BASED SCHOOL INFORMATION MONITORING SYSTEM</p></div>
-</div></header>
-<nav>
-<a href="index.html">HOME</a><a href="announcements.html">ANNOUNCEMENTS</a><a href="events.html">EVENTS</a><a href="schedules.html">SCHEDULES</a><a href="about.html">ABOUT</a>
-</nav>
-<main>
-<section class="heading"><h2>📢 ANNOUNCEMENTS</h2><p>Stay updated with the latest school announcements.</p></section>
-<div id="posts">Loading announcements...</div>
-</main>
-<footer>© 2026 Minuyan National High School</footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
-<script>
-const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-function safe(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
-async function load(){
- const box=document.getElementById("posts");
- const {data,error}=await db.from("site_posts").select("*").eq("page","announcements").order("created_at",{ascending:false});
- if(error){box.textContent="Unable to load announcements.";return;}
- box.innerHTML=data.length?data.map(p=>`
- <article class="post">
- <h2>${safe(p.title)}</h2>
- ${p.image_url?`<img src="${safe(p.image_url)}" alt="Announcement image">`:""}
- <p>${safe(p.content).replace(/\n/g,"<br>")}</p>
- ${p.file_url?`<p><a href="${safe(p.file_url)}" target="_blank" rel="noopener">View attached file</a></p>`:""}
- <small>Posted: ${new Date(p.created_at).toLocaleDateString()}</small>
- </article>`).join(""):"<p>No announcements have been posted yet.</p>";
-}
-load();
-</script>
+
+    <h2>PREVIOUS ANNOUNCEMENT</h2>
+
+    <hr>
+
+    <h3>Police Visibility sa Minuyan National High School</h3>
+
+    <p>
+        <strong>Date of Activity:</strong>
+        November 11, 2026
+    </p>
+
+    <p>
+        <strong>Time of Activity:</strong>
+        6:30 AM
+    </p>
+
+    <p>
+        <strong>Location:</strong>
+        Minuyan National High School, Brgy. Minuyan,
+        Norzagaray, Bulacan
+    </p>
+
+    <p>
+        <strong>Announcement Date:</strong>
+        November 11, 2026
+    </p>
+
+    <hr>
+
+    <p>
+        November 11, 2026, 6:30 AM, ang kapulisan ng
+        Norzagaray sa pamumuno ni PLTCOL RAMMEL L EB
+        ARLE, OIC, ay nagsagawa ng police visibility sa
+        Minuyan National High School, Brgy. Minuyan,
+        Norzagaray, Bulacan.
+    </p>
+
+    <p>
+        Isinagawa ang aktibidad bilang bahagi ng direktiba
+        upang matiyak ang kaligtasan at seguridad ng mga
+        mag-aaral, guro, at iba pang kawani ng paaralan.
+        Pinangunahan ito ni Pat Klyd Pineda na nagsagawa
+        ng inspeksyon sa mga itinalagang lugar tulad ng
+        mga pasukan, silid-aralan, at mga kalapit na
+        paligid upang masiguro ang presensya at kahandaan
+        ng kapulisan sa pagpapanatili ng kapayapaan at
+        kaayusan.
+    </p>
+
+    <p>
+        Layunin ng operasyon na maiwasan ang anumang
+        posibleng kaguluhan, mapalakas ang koordinasyon
+        sa pamunuan ng paaralan, at maisulong ang isang
+        ligtas na kapaligiran para sa pag-aaral.
+        Naging matagumpay ang aktibidad at walang
+        naitalang anumang hindi kanais-nais na insidente.
+        Inirerekomenda na ipagpatuloy ang regular na
+        visibility patrol upang matiyak ang tuloy-tuloy
+        na seguridad sa lugar.
+    </p>
+
+    <p>
+        #BagongPNPparasaBagongPilipinasSerbisyongMabilisTapatatNararandaman
+    </p>
+
+    <p>
+        #ToServeandProtect
+    </p>
+
+    <p>
+        #teampro3
+    </p>
+
+    <p>
+        #pro3oplanbesOctober2026w1_84
+    </p>
+
+    <p>
+        #Bulacanppo_NorzagarayMPS
+    </p>
+
+    <hr>
+
+    <p>
+        <strong>Status:</strong> Previous Announcement
+    </p>
+
 </body>
 </html>
